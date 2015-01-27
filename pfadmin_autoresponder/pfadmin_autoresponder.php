@@ -33,7 +33,7 @@ class pfadmin_autoresponder extends rcube_plugin
 {
   public $task = 'settings';
   private $sql_select = 'SELECT * FROM vacation WHERE email = %u LIMIT 1;';
-  private $sql_update = 'insert into vacation (email, active, subject, body, activefrom ,activeuntil) values (%u, %o, %s, %m, %f, %d) on duplicate key update active = %o, subject = %s, body = %m, activefrom = %f, activeuntil =%d;';
+  private $sql_update = 'insert into vacation (email, active, subject, body, cache) values (%u, %o, %s, %m, "") on duplicate key update active = %o, subject = %s, body = %m, cache="";';
   private $date_format_regexp = '/^\d{4}\/\d{2}\/\d{2}$/';
   
 
@@ -84,20 +84,20 @@ class pfadmin_autoresponder extends rcube_plugin
       $enabled = 0;
     $subject     = get_input_value('_autorespondersubject', RCUBE_INPUT_POST);
     $body        = get_input_value('_autoresponderbody', RCUBE_INPUT_POST);
-    $date        = get_input_value('_autoresponderdate', RCUBE_INPUT_POST);
-    $datefrom      = get_input_value('_autoresponderdatefrom', RCUBE_INPUT_POST);
+    #$date        = get_input_value('_autoresponderdate', RCUBE_INPUT_POST);
+    #$datefrom      = get_input_value('_autoresponderdatefrom', RCUBE_INPUT_POST);
 
     // check $datefrom
-    if(preg_match("/^\s*$/", $datefrom) or !preg_match($this->date_format_regexp, $datefrom))
-      $datefrom = "now()";
-    if(preg_match("/^\s*$/", $date) or !preg_match($this->date_format_regexp, $date)){
-      $date = "NULL";
-    }
-    if(!$enabled){
-      $date = $datefrom = "NULL";
-    }
+    #if(preg_match("/^\s*$/", $datefrom) or !preg_match($this->date_format_regexp, $datefrom))
+    #  $datefrom = "now()";
+    #if(preg_match("/^\s*$/", $date) or !preg_match($this->date_format_regexp, $date)){
+    #  $date = "NULL";
+    #}
+    #if(!$enabled){
+    #  $date = $datefrom = "NULL";
+    #}
             
-    if (!($res = $this->_save($user,$enabled,$subject,$body,$date, $datefrom))) {
+    if (!($res = $this->_save($user,$enabled,$subject,$body))) {
         if(isset($_SESSION['dnsblacklisted']) && $_SESSION['dnsblacklisted'] != 'pass'){
           $this->add_texts('../dnsbl/localization/');
           $rcmail->output->command('display_message', sprintf(rcube_label('dnsblacklisted', 'pfadmin_autoresponder'),$_SESSION['clientip']),'error');        
@@ -143,16 +143,16 @@ class pfadmin_autoresponder extends rcube_plugin
     $enabled     = $settings['active'];
     $subject     = $settings['subject'];
     $body        = $settings['body'];
-    $date        = $settings['activeuntil'];
-    $datefrom    = $settings['activefrom'];
+    #$date        = $settings['activeuntil'];
+    #$datefrom    = $settings['activefrom'];
 
-    $date = str_replace("-","/",substr($date,0,10));
-    $datefrom = str_replace("-","/",substr($datefrom,0,10));
+    #$date = str_replace("-","/",substr($date,0,10));
+    #$datefrom = str_replace("-","/",substr($datefrom,0,10));
     
-    if($date == "0000/00/00")
-      $date = "";
-    if($datefrom == "0000/00/00")
-      $datefrom = "";
+    #if($date == "0000/00/00")
+    #  $date = "";
+    #if($datefrom == "0000/00/00")
+    #  $datefrom = "";
        
     $rcmail->output->set_env('product_name', $rcmail->config->get('product_name'));
 
@@ -175,14 +175,14 @@ class pfadmin_autoresponder extends rcube_plugin
     $table->add('title', html::label($field_id, rep_specialchars_output($this->gettext('autorespondermessage'))));
     $table->add(null, $input_autoresponderbody->show($body));
 
-    $field_id = 'autoresponderdatefrom';
-    $input_autoresponderdatefrom = new html_inputfield(array('name' => '_autoresponderdatefrom', 'id' => $field_id, 'value' => $date, 'maxlength' => 10, 'size' => 10));
+    #$field_id = 'autoresponderdatefrom';
+    #$input_autoresponderdatefrom = new html_inputfield(array('name' => '_autoresponderdatefrom', 'id' => $field_id, 'value' => $date, 'maxlength' => 10, 'size' => 10));
 
-    $table->add('title', html::label($field_id, rep_specialchars_output($this->gettext('autoresponderdatefrom'))));
-    $table->add(null, $input_autoresponderdatefrom->show($datefrom) . " ". $this->gettext('dateformat'));
+    #$table->add('title', html::label($field_id, rep_specialchars_output($this->gettext('autoresponderdatefrom'))));
+    #$table->add(null, $input_autoresponderdatefrom->show($datefrom) . " ". $this->gettext('dateformat'));
 
-    $field_id = 'autoresponderdate';
-    $input_autoresponderdate = new html_inputfield(array('name' => '_autoresponderdate', 'id' => $field_id, 'value' => $date, 'maxlength' => 10, 'size' => 10));
+    #$field_id = 'autoresponderdate';
+    #$input_autoresponderdate = new html_inputfield(array('name' => '_autoresponderdate', 'id' => $field_id, 'value' => $date, 'maxlength' => 10, 'size' => 10));
 
     $table->add('title', html::label($field_id, rep_specialchars_output($this->gettext('autoresponderdate'))));
     $table->add(null, $input_autoresponderdate->show($date) . " ". $this->gettext('dateformat'));
@@ -245,7 +245,7 @@ class pfadmin_autoresponder extends rcube_plugin
     return $ret;  
   }
 
-  private function _save($user,$enabled,$subject,$body,$date, $datefrom)
+  private function _save($user,$enabled,$subject,$body)
   {
     $cfg = rcmail::get_instance()->config;
     
@@ -263,8 +263,8 @@ class pfadmin_autoresponder extends rcube_plugin
 
     $sql = str_replace('%s',  $db->quote($subject,'text'), $sql);
     $sql = str_replace('%m',  $db->quote($body,'text'), $sql);
-    $sql = str_replace('%d',  preg_match('/NULL|now/', $date) ? $date : $db->quote($date,'text'), $sql);            
-    $sql = str_replace('%f',  preg_match('/NULL|now/', $datefrom) ? $datefrom : $db->quote($datefrom,'text'), $sql);           
+    #$sql = str_replace('%d',  preg_match('/NULL|now/', $date) ? $date : $db->quote($date,'text'), $sql);            
+    #$sql = str_replace('%f',  preg_match('/NULL|now/', $datefrom) ? $datefrom : $db->quote($datefrom,'text'), $sql);           
     $sql = str_replace('%o',  $db->quote($enabled,'text'), $sql);
     $sql = str_replace('%u',  $db->quote($user,'text'), $sql);
     
