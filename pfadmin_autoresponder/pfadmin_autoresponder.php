@@ -184,8 +184,8 @@ class pfadmin_autoresponder extends rcube_plugin
     #$field_id = 'autoresponderdate';
     #$input_autoresponderdate = new html_inputfield(array('name' => '_autoresponderdate', 'id' => $field_id, 'value' => $date, 'maxlength' => 10, 'size' => 10));
 
-    $table->add('title', html::label($field_id, rep_specialchars_output($this->gettext('autoresponderdate'))));
-    $table->add(null, $input_autoresponderdate->show($date) . " ". $this->gettext('dateformat'));
+    #$table->add('title', html::label($field_id, rep_specialchars_output($this->gettext('autoresponderdate'))));
+    #$table->add(null, $input_autoresponderdate->show($date) . " ". $this->gettext('dateformat'));
 
     $field_id = 'autoresponderenabled';
     $input_autoresponderenabled = new html_checkbox(array('name' => '_autoresponderenabled', 'id' => $field_id, 'value' => 1));
