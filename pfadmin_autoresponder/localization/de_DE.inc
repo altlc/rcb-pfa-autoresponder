@@ -1,6 +1,5 @@
 <?php
 
-$labels = array();
 $labels['autoresponder'] = 'Abwesenheitsnachricht';
 $labels['autorespondersubject'] = 'Betreff';
 $labels['autorespondermessage'] = 'Nachricht';
@@ -11,9 +10,6 @@ $labels['autoresponderenabled'] = 'Aktiviert';
 $labels['dateformat'] = 'dd.mm.yyyy';
 $labels['and'] = 'und';
 
-$labels['autoresponder'] = 'Abwesenheitsnachricht';
-
-$messages = array();
 $messages['dateformatinconsistency'] = 'Datumsformat nicht korrekt';
 $messages['entervalidmonth'] = 'Bitte geben Sie einen gültigen Monat ein.';
 $messages['entervalidday'] = 'Bitte geben Sie einen gültigen Tag ein.';

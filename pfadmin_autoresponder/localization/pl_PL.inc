@@ -1,7 +1,6 @@
 <?php
 
-$labels = array();
-$labels['autoresponder'] = 'Autoodpowiedź';
+$labels['autoresponder'] = 'Wakacje';
 $labels['autorespondersubject'] = 'Temat';
 $labels['autorespondermessage'] = 'Wiadomość';
 $labels['autoresponderdate'] = 'Ważne do';
@@ -9,9 +8,7 @@ $labels['autoresponderdatefrom'] = 'Ważne od';
 $labels['autoresponderenabled'] = 'Włączone';
 $labels['dateformat'] = 'rrrr/mm/dd';
 $labels['and'] = 'i';
-$labels['autoresponder'] = 'Wakacje';
 
-$messages = array();
 $messages['dateformatinconsistency'] = 'Date format is inconsistent';
 $messages['entervalidmonth'] = 'Enter a valid month.';
 $messages['entervalidday'] = 'Enter a valid day.';

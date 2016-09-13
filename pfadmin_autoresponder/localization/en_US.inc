@@ -1,7 +1,6 @@
 <?php
 
-$labels = array();
-$labels['autoresponder'] = 'Away message';
+$labels['autoresponder'] = 'Vacation';
 $labels['autorespondersubject'] = 'Subject';
 $labels['autorespondermessage'] = 'Message';
 $labels['autoresponderexpires'] = 'Ending Date';
@@ -11,9 +10,7 @@ $labels['autoresponderenabled'] = 'Enabled';
 $labels['dateformat'] = 'yyyy/mm/dd';
 $labels['and'] = 'and';
 
-$labels['autoresponder'] = 'Vacation';
 
-$messages = array();
 $messages['dateformatinconsistency'] = 'Date format is inconsistent';
 $messages['entervalidmonth'] = 'Enter a valid month.';
 $messages['entervalidday'] = 'Enter a valid day.';

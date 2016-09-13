@@ -1,0 +1,8 @@
+
+#settings-tabs .listitem .autoresponder {
+    background-image:url(images/reply-light.png);
+    background-position: 6px 0px;
+}
+#settings-tabs .selected .autoresponder {
+    background-image:url(images/reply-dark.png);
+}

@@ -2,11 +2,6 @@
 
 if (window.rcmail) {
     rcmail.addEventListener('init', function(evt) {
-    var tab = $('<span>').attr('id', 'settingstabpluginautoresponder').addClass('tablink');
-
-    var button = $('<a>').attr('href', rcmail.env.comm_path+'&_action=plugin.pfadmin_autoresponder').html(rcmail.gettext('Vacation')).appendTo(tab);
-        button.bind('click', function(e){ return rcmail.command('plugin.pfadmin_autoresponder', this) });
-    rcmail.add_element(tab, 'tabs');       
      
     rcmail.register_command('plugin.pfadmin_autoresponder', function() { rcmail.goto_url('plugin.pfadmin_autoresponder') }, true);
     rcmail.register_command('plugin.pfadmin_autoresponder-save', function() { 
